@@ -1,37 +1,46 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate } from 'react-router-dom'
-
-import { useSelector } from 'react-redux'
-import { selectUserById } from './usersApiSlice'
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faUser, faUserSlash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUserById } from './usersApiSlice';
 
 const User = ({ userId }) => {
-    const user = useSelector(state => selectUserById(state, userId))
+    const user = useSelector(state => selectUserById(state, userId));
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
+    if (!user) return null;
 
-    if (user) {
-        const handleEdit = () => navigate(`/dash/users/${userId}`)
+    const handleEdit = () => navigate(`/dash/users/${userId}`);
 
-        const userRolesString = user.roles.toString().replaceAll(',', ', ')
+    // Determine cell colors based on user roles
+    let cellStatus = 'text-gray-300';
+    if (user.roles.includes('admin')) {
+        cellStatus = 'text-yellow-400'; // Example color for admin
+    } else if (user.roles.includes('manager')) {
+        cellStatus = 'text-green-400'; // Example color for manager
+    } else {
+        cellStatus = 'text-blue-400'; // Example color for employee
+    }
 
-        const cellStatus = user.active ? '' : 'table__cell--inactive'
+    return (
+        <tr className="hover:bg-gray-700">
+            <td className={`px-6 py-4 text-sm ${cellStatus}`}>
+                <FontAwesomeIcon icon={user.active ? faUser : faUserSlash} />
+                <span className="px-6 py-4 text-sm text-gray-300"> 
+                    {user.username}
+                </span>
+            </td>
+            <td className="px-6 py-4 text-sm text-gray-300">{user.roles.join(', ')}</td>
+            <td className="px-6 py-4 text-sm text-gray-300 cursor-pointer">
+                <FontAwesomeIcon
+                    icon={faEdit}
+                    className="text-blue-400 hover:text-blue-500"
+                    onClick={handleEdit}
+                />
+            </td>
+        </tr>
+    );
+};
 
-        return (
-            <tr className="table__row user">
-                <td className={`table__cell ${cellStatus}`}>{user.username}</td>
-                <td className={`table__cell ${cellStatus}`}>{userRolesString}</td>
-                <td className={`table__cell ${cellStatus}`}>
-                    <button
-                        className="icon-button table__button"
-                        onClick={handleEdit}
-                    >
-                        <FontAwesomeIcon icon={faPenToSquare} />
-                    </button>
-                </td>
-            </tr>
-        )
-
-    } else return null
-}
-export default User
+export default User;

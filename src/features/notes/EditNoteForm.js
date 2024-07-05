@@ -1,161 +1,163 @@
-import { useState, useEffect } from "react"
-import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice"
-import { useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import { useState, useEffect } from "react";
+import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const EditNoteForm = ({ note, users }) => {
+    const [updateNote, { isLoading, isSuccess, isError, error }] = useUpdateNoteMutation();
+    const [deleteNote, { isSuccess: isDelSuccess, isError: isDelError, error: delError }] = useDeleteNoteMutation();
+    const navigate = useNavigate();
 
-    const [updateNote, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateNoteMutation()
-
-    const [deleteNote, {
-        isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
-    }] = useDeleteNoteMutation()
-
-    const navigate = useNavigate()
-
-    const [title, setTitle] = useState(note.title)
-    const [text, setText] = useState(note.text)
-    const [completed, setCompleted] = useState(note.completed)
-    const [userId, setUserId] = useState(note.user_id)
+    const [title, setTitle] = useState(note.title);
+    const [text, setText] = useState(note.text);
+    const [completed, setCompleted] = useState(note.completed);
+    const [userId, setUserId] = useState(note.user_id);
 
     useEffect(() => {
-
         if (isSuccess || isDelSuccess) {
-            setTitle('')
-            setText('')
-            setUserId('')
-            navigate('/dash/notes')
+            setTitle('');
+            setText('');
+            setUserId('');
+            navigate('/dash/notes');
         }
+    }, [isSuccess, isDelSuccess, navigate]);
 
-    }, [isSuccess, isDelSuccess, navigate])
+    const onTitleChanged = e => setTitle(e.target.value);
+    const onTextChanged = e => setText(e.target.value);
+    const onCompletedChanged = () => setCompleted(prev => !prev);
+    const onUserIdChanged = e => setUserId(e.target.value);
 
-    const onTitleChanged = e => setTitle(e.target.value)
-    const onTextChanged = e => setText(e.target.value)
-    const onCompletedChanged = e => setCompleted(prev => !prev)
-    const onUserIdChanged = e => setUserId(e.target.value)
+    const canSave = [title, text, userId].every(Boolean) && !isLoading;
 
-    const canSave = [title, text, userId].every(Boolean) && !isLoading
-
-    const onSaveNoteClicked = async (e) => {
-        // console.log(canSave)
+    const onSaveNoteClicked = async () => {
         if (canSave) {
-            await updateNote({ id: note.id, user_id: userId, title, text, completed })
+            await updateNote({ id: note.id, user_id: userId, title, text, completed });
         }
-    }
+    };
 
     const onDeleteNoteClicked = async () => {
-        await deleteNote({ id: note.id })
-    }
+        await deleteNote({ id: note.id });
+    };
 
-    const created = new Date(note.createdAt).toLocaleString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
-    const updated = new Date(note.updatedAt).toLocaleString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
+    const created = new Date(note.createdAt).toLocaleString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    });
 
-    const options = users.map(user => {
-        return (
-            <option
-                key={user.id}
-                value={user.id}
+    const updated = new Date(note.updatedAt).toLocaleString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    });
 
-            > {user.username}</option >
-        )
-    })
+    const options = users.map(user => (
+        <option key={user.id} value={user.id}>{user.username}</option>
+    ));
 
-    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
-    const validTitleClass = !title ? "form__input--incomplete" : ''
-    const validTextClass = !text ? "form__input--incomplete" : ''
+    const errClass = (isError || isDelError) ? "text-red-500" : "hidden";
+    const validTitleClass = !title ? "border-red-500" : 'border-gray-500';
+    const validTextClass = !text ? "border-red-500" : 'border-gray-500';
 
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+    const errContent = (error?.data?.message || delError?.data?.message) ?? '';
 
-    const content = (
-        <>
-            <p className={errClass}>{errContent}</p>
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-black">
+            <div className="w-full max-w-md">
+                <p className={`${errClass} text-center my-2`}>{errContent}</p>
 
-            <form className="form" onSubmit={e => e.preventDefault()}>
-                <div className="form__title-row">
-                    <h2>Edit Note #{note.ticket}</h2>
-                    <div className="form__action-buttons">
-                        <button
-                            className="icon-button"
-                            title="Save"
-                            onClick={onSaveNoteClicked}
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        <button
-                            className="icon-button"
-                            title="Delete"
-                            onClick={onDeleteNoteClicked}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                        </button>
+                <form className="form bg-gray-900 text-white p-6 rounded shadow-lg" onSubmit={e => e.preventDefault()}>
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-xl font-bold">Edit Note #{note.ticket}</h2>
+                        <div className="flex space-x-2">
+                            <button
+                                className="bg-green-600 hover:bg-green-700 text-white p-2 rounded"
+                                title="Save"
+                                onClick={onSaveNoteClicked}
+                                disabled={!canSave}
+                            >
+                                <FontAwesomeIcon icon={faSave} />
+                            </button>
+                            <button
+                                className="bg-red-600 hover:bg-red-700 text-white p-2 rounded"
+                                title="Delete"
+                                onClick={onDeleteNoteClicked}
+                            >
+                                <FontAwesomeIcon icon={faTrash} />
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <label className="form__label" htmlFor="note-title">
-                    Title:</label>
-                <input
-                    className={`form__input ${validTitleClass}`}
-                    id="note-title"
-                    name="title"
-                    type="text"
-                    autoComplete="off"
-                    value={title}
-                    onChange={onTitleChanged}
-                />
 
-                <label className="form__label" htmlFor="note-text">
-                    Text:</label>
-                <textarea
-                    className={`form__input form__input--text ${validTextClass}`}
-                    id="note-text"
-                    name="text"
-                    value={text}
-                    onChange={onTextChanged}
-                />
-                <div className="form__row">
-                    <div className="form__divider">
-                        <label className="form__label form__checkbox-container" htmlFor="note-completed">
-                            WORK COMPLETE:
-                            <input
-                                className="form__checkbox"
-                                id="note-completed"
-                                name="completed"
-                                type="checkbox"
-                                checked={completed}
-                                onChange={onCompletedChanged}
-                            />
-                        </label>
+                    <label className="block text-sm font-semibold mb-2" htmlFor="note-title">Title:</label>
+                    <input
+                        className={`w-full p-2 mb-4 rounded bg-black text-white border ${validTitleClass}`}
+                        id="note-title"
+                        name="title"
+                        type="text"
+                        autoComplete="off"
+                        value={title}
+                        onChange={onTitleChanged}
+                        style={{ maxWidth: '300px' }}
+                    />
 
-                        <label className="form__label form__checkbox-container" htmlFor="note-username">
-                            ASSIGNED TO:</label>
-                        <select
-                            id="note-username"
-                            name="username"
-                            className="form__select"
-                            value={userId}
-                            onChange={onUserIdChanged}
-                        >
-                            {options}
-                        </select>
+                    <label className="block text-sm font-semibold mb-2" htmlFor="note-text">Text:</label>
+                    <textarea
+                        className={`w-full p-2 mb-4 h-32 rounded bg-black text-white border ${validTextClass}`}
+                        id="note-text"
+                        name="text"
+                        value={text}
+                        onChange={onTextChanged}
+                        style={{ minHeight: '150px' }}
+                    />
+
+                    <div className="flex justify-between items-center mb-4">
+                        <div>
+                            <label className="block text-sm font-semibold mb-2" htmlFor="note-completed">
+                                Work Complete:
+                                <input
+                                    className="ml-2"
+                                    id="note-completed"
+                                    name="completed"
+                                    type="checkbox"
+                                    checked={completed}
+                                    onChange={onCompletedChanged}
+                                />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-semibold mb-2" htmlFor="note-username">Assigned To:</label>
+                            <select
+                                id="note-username"
+                                name="username"
+                                className="w-full p-2 rounded bg-black text-white border border-gray-500"
+                                value={userId}
+                                onChange={onUserIdChanged}
+                            >
+                                {options}
+                            </select>
+                        </div>
                     </div>
-                    <div className="form__divider">
-                        <p className="form__created">Created:<br />{created}</p>
-                        <p className="form__updated">Updated:<br />{updated}</p>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <p className="text-sm">Created:<br />{created}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm">Updated:<br />{updated}</p>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </>
-    )
+                </form>
+            </div>
+        </div>
+    );
+};
 
-    return content
-}
-
-export default EditNoteForm
+export default EditNoteForm;

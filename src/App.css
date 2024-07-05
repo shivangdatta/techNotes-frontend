@@ -7,12 +7,6 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,15 +18,48 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* App.css */
+body {
+  background-image: url('https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/assets/media/wallpapers/Grass-Block-1.png');
+  background-size: cover;
+  background-position: center;
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+}
+/* App.css */
+body {
+  font-family: 'Orbitron', sans-serif;
+  background-color: #000000; /* Fallback color */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.font-ps2 {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-ps2-glow {
+  font-family: 'Orbitron', sans-serif;
+  text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 15px #00FFFF;
+}
+
+.bg-dark {
+  background-color: #000000;
+}
+
+.bg-opacity-70 {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.border-neon-blue {
+  border-color: #00FFFF;
+}
+
+.neon-btn {
+  background: #00FFFF;
+  color: #000;
+  font-family: 'Orbitron', sans-serif;
+  box-shadow: 0 0 5px #00FFFF, 0 0 15px #00FFFF;
+  transition: transform 0.2s ease;
+}
+.neon-btn:hover {
+  transform: scale(1.05);
 }

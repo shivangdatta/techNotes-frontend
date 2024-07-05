@@ -1,0 +1,20 @@
+@keyframes blow {
+    0% {
+      transform: translateX(100%) rotate(0deg);
+    }
+    50% {
+      transform: translateX(-100%) rotate(-20deg);
+    }
+    100% {
+      transform: translateX(-200%) rotate(0deg);
+    }
+  }
+  
+  .leaf {
+    position: absolute;
+    top: 50%; /* Adjust vertical position as needed */
+    left: 100%; /* Start position outside the screen */
+    animation: blow 2s infinite linear; /* Adjust duration as needed */
+  }
+  
+  
