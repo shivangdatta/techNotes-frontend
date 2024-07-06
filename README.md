@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+# 🎨 TechNotes Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![TechNotes](https://your-link-to-image.com/header.png)
 
-## Available Scripts
+## ✨ Overview
 
-In the project directory, you can run:
+Welcome to **TechNotes** – a futuristic digital note management system designed to replace traditional sticky notes. This frontend application is built with React and Tailwind CSS, using Redux and Redux Toolkit for state management and caching. Dive into a seamless note-taking experience with our feature-rich platform.
 
-### `npm start`
+## 🚀 Key Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 🗒️ **Digital Note Management**: Upgrade from traditional sticky notes to a digital solution.
+- 🔐 **Secure Login**: Role-based access control to ensure appropriate access for employees, managers, and admins.
+- 👥 **Employee Access**: Employees manage their notes; managers and admins oversee all notes and user settings.
+- ⏰ **Weekly Login Enforcement**: Users must log in at least once a week using JWT access and refresh tokens.
+- ⚙️ **Global State Management**: Efficient state management using Redux and Redux Toolkit.
+- 🚀 **Caching and Prefetching**: Enhanced performance with caching, prefetching, and consistent data fetching for sensitive data.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🔑 User Roles and Access
 
-### `npm test`
+### 🛡️ Admin/Manager
+- **Credentials**: 
+  - Username: `signed_up`
+  - Password: `password`
+- **Privileges**:
+  - View, edit, and delete all notes.
+  - Manage user settings and create new users.
+  - Immediate removal of employee access if needed.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 👤 Employee
+- **Credentials**:
+  - Username: `user`
+  - Password: `user`
+- **Privileges**:
+  - View and manage their assigned notes.
+  - Cannot access user settings or delete others' notes.
 
-### `npm run build`
+## 🛠️ Technologies and Tools
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 📦 Frontend Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **React**: A library for building user interfaces.
+- **Tailwind CSS**: A utility-first CSS framework for styling.
+- **Redux**: A predictable state container for JavaScript apps.
+- **Redux Toolkit**: Simplifies Redux logic and state management.
+- **React Router**: Declarative routing for React applications.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 📊 State Management
 
-### `npm run eject`
+- **Redux**: Manages the global state for a single source of truth.
+- **Redux Toolkit**: Provides tools to simplify Redux usage, including `createSlice` for state and reducer logic, and `createAsyncThunk` for async operations.
+- **RTK Query**: Handles data fetching, caching, and synchronization.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🔒 Authentication
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **JWT**: Secure token-based authentication.
+- **Token-Based**: Sessions managed via access and refresh tokens.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### ⚡ Caching and Performance
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **RTK Query**: Caches and prefetches data to reduce network requests and enhance performance.
+- **Consistent Fetching**: Regularly fetches active data every 15 seconds to maintain data consistency.
 
-## Learn More
+## 🚀 Getting Started
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To start using the TechNotes frontend:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/your-username/techNotes-frontend.git
+   cd techNotes-frontend
