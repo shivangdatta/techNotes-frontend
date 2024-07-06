@@ -1,6 +1,7 @@
 # 🎨 TechNotes Frontend
 
-[![TechNotes](https://your-link-to-image.com/header.png)](https://technotes-frontend-zwm4.onrender.com)
+[![TechNotes](![image](https://github.com/shivangdatta/techNotes-frontend/assets/115028852/ad9ba67b-1a54-4d8d-bdb3-d92427e03c58)
+)](https://technotes-frontend-zwm4.onrender.com)
 
 ## ✨ Overview
 
